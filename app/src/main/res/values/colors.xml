@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#A20016</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="tab_color">#00796B</color>
+    <color name="darkGrey">#3B3F40</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lightgrey">#EAEAEA</color>
+    <color name="fontColor">#555555</color>
+    <color name="green">#91DC5A</color>
+    <color name="secondaryFontColor">#757575</color>
+    <color name="primaryFontColor">#000000</color>
+    <color name="seniorColor">#B2ADAE</color>
+</resources>
