@@ -4,8 +4,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,7 +27,10 @@ public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private  AHBottomNavigation bottomNavigation;
-    private AHBottomNavigationItem home, profile, settings;
+//    private AHBottomNavigationItem home, profile, settings;
+    private ViewPager pager;
+    private FragmentManager manager;
+    private FragmentPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +39,15 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         bottomNavigation = (AHBottomNavigation)findViewById(R.id.bottom_navigation);
+        pager = (ViewPager)findViewById(R.id.view_pager);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        adapter = new MyPagerAdapter(manager);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -151,6 +160,47 @@ public class Home extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private static int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        /**
+         * Return the Fragment associated with a specified position.
+         *
+         * @param position
+         */
+        @Override
+        public Fragment getItem(int position) {
+            return null;
+        }
+
+        /**
+         * Return the number of views available.
+         */
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        /**
+         * This method may be called by the ViewPager to obtain a title string
+         * to describe the specified page. This method may return null
+         * indicating no title for this page. The default implementation returns
+         * null.
+         *
+         * @param position The position of the title requested
+         * @return A title for the requested page
+         */
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return super.getPageTitle(position);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
