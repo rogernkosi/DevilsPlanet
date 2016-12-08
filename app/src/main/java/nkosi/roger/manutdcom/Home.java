@@ -1,16 +1,12 @@
-package nkosi.roger.mpumalangaevents;
+package nkosi.roger.manutdcom;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,7 +24,7 @@ public class Home extends AppCompatActivity
 
     private  AHBottomNavigation bottomNavigation;
 //    private AHBottomNavigationItem home, profile, settings;
-    private ViewPager pager;
+
     private FragmentManager manager;
     private FragmentPagerAdapter adapter;
 
@@ -39,7 +35,7 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         bottomNavigation = (AHBottomNavigation)findViewById(R.id.bottom_navigation);
-        pager = (ViewPager)findViewById(R.id.view_pager);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -47,7 +43,6 @@ public class Home extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        adapter = new MyPagerAdapter(manager);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -64,7 +59,7 @@ public class Home extends AppCompatActivity
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         final AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_account_box_black_24dp, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_home_black_24dp, R.color.colorPrimary);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_settings_black_24dp, R.color.colorPrimary);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_list_black_24dp, R.color.colorPrimary);
 
         bottomNavigation.addItem(item1);
         bottomNavigation.addItem(item2);
@@ -116,7 +111,7 @@ public class Home extends AppCompatActivity
                     case 2:
                         FragmentManager manager2 = getSupportFragmentManager();
                         FragmentTransaction transaction2 = manager2.beginTransaction();
-                        transaction2.replace(R.id.content_home, new PreferencesFragment());
+                        transaction2.replace(R.id.content_home, new FindEvents());
                         transaction2.commit();
                         bottomNavigation.setCurrentItem(position, wasSelected);
                         Log.e("pos", position+"");

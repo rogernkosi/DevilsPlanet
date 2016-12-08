@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mpumalanga Events</string>
+    <string name="app_name">TEST</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email (required)</string>
@@ -21,7 +21,7 @@
     <string name="action_settings">Settings</string>
     <string name="tab_1">Home</string>
     <string name="tab_2">Profile</string>
-    <string name="tab_3">Preferences</string>
+    <string name="tab_3">Calendar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

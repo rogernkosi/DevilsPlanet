@@ -1,4 +1,4 @@
-package nkosi.roger.mpumalangaevents;
+package nkosi.roger.manutdcom;
 
 import org.junit.Test;
 
