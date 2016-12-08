@@ -21,22 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:scaleType="fitXY"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/headline_thumbnail"
-                    android:src="@drawable/ic_image_black_24dp"
-                    android:layout_width="70dp"
-                    android:layout_height="73dp" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
