@@ -12,6 +12,7 @@ public class HeadlinesModel {
         this.headline = builder.headline;
         this.img = builder.img;
         this.hId = builder.hId;
+        this.source = builder.source;
     }
 
     public static class HeadlineBuilder{

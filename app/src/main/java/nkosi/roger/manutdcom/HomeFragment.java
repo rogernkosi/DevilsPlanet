@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,11 +143,23 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
         @Override
         public void onBindViewHolder(Holder holder, int position) {
             final HeadlinesModel model = this.postModels.get(position);
-            holder.source.setText(model.source);
+            holder.source.setText("Source : " + model.source);
             holder.details.setText(model.details.substring(0, 130)+"...");
             holder.headline.setText(model.headline);
 
-//            Picasso.with(holder.itemView.getContext()).load(Constants.BASE_URL + "images/" + model.img).into(holder.imageView);
+            Picasso.with(holder.itemView.getContext()).load(Constants.BASE_URL + "images/" + model.img).into(holder.imageView);
+
+            holder.parentView.setSelected(list.contains(position));
+
+            holder.parentView.setOnClickListener(new View.OnClickListener() {
+
+                String id = model.hId;
+
+                @Override
+                public void onClick(View v) {
+                    Log.e(id, id);
+                }
+            });
         }
 
         /**
@@ -167,7 +180,7 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
             public Holder(View itemView) {
                 super(itemView);
                 this.parentView = itemView;
-//                imageView = (ImageView)itemView.findViewById(R.id.headline_thumbnail);
+                imageView = (ImageView)itemView.findViewById(R.id.headline_thumbnail);
                 headline = (TextView)itemView.findViewById(R.id.headline);
                 details = (TextView)itemView.findViewById(R.id.details);
                 source = (TextView)itemView.findViewById(R.id.source);

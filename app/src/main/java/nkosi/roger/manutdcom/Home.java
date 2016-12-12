@@ -52,7 +52,7 @@ public class Home extends AppCompatActivity
         transaction.replace(R.id.content_home, new HomeFragment());
         transaction.commit();
 
-        setBottomNavigation();
+//        setBottomNavigation();
     }
 
     public void setBottomNavigation(){
@@ -205,7 +205,11 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            FragmentManager manager0 = getSupportFragmentManager();
+            FragmentTransaction transaction0 = manager0.beginTransaction();
+            transaction0.replace(R.id.content_home, new ProfileFragment());
+            transaction0.commit();
+            bottomNavigation.hideBottomNavigation();
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
