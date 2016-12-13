@@ -1,6 +1,8 @@
 package nkosi.roger.manutdcom;
 
 
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -157,7 +159,9 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
 
                 @Override
                 public void onClick(View v) {
-                    Log.e(id, id);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), NewsDetailActivity.class);
+                    intent.putExtra("id", id);
+                    startActivityForResult(intent,1);
                 }
             });
         }
@@ -184,7 +188,23 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
                 headline = (TextView)itemView.findViewById(R.id.headline);
                 details = (TextView)itemView.findViewById(R.id.details);
                 source = (TextView)itemView.findViewById(R.id.source);
+                this.setType();
             }
+
+            public void setType(){
+                Typeface typeface, details;
+
+                typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/arcon_regular.otf");
+                details = Typeface.createFromAsset(getActivity().getAssets(), "fonts/arcon_regular.otf");
+                this.headline.setTypeface(typeface, Typeface.BOLD);
+                this.details.setTypeface(details);
+                this.headline.setTextSize(14);
+                this.headline.setTextColor(getResources().getColor(R.color.primaryFontColor));
+                this.details.setTextColor(getResources().getColor(R.color.secondaryFontColor));
+            }
+
         }
+
+
     }
 }

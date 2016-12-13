@@ -1,11 +1,13 @@
 package nkosi.roger.manutdcom;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -34,12 +36,14 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        bottomNavigation = (AHBottomNavigation)findViewById(R.id.bottom_navigation);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(),   R.drawable.view_grid, getTheme());
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -54,9 +58,8 @@ public class Home extends AppCompatActivity
 
 //        setBottomNavigation();
     }
-
     public void setBottomNavigation(){
-        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
+//        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         final AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_account_box_black_24dp, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_home_black_24dp, R.color.colorPrimary);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_list_black_24dp, R.color.colorPrimary);
@@ -204,17 +207,13 @@ public class Home extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             FragmentManager manager0 = getSupportFragmentManager();
             FragmentTransaction transaction0 = manager0.beginTransaction();
-            transaction0.replace(R.id.content_home, new ProfileFragment());
+            transaction0.replace(R.id.content_home, new HomeFragment());
             transaction0.commit();
-            bottomNavigation.hideBottomNavigation();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_calendar) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 

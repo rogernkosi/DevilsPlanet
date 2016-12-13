@@ -3,21 +3,48 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home" />
+
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_live_matches"
+            android:icon="@drawable/soccer"
+            android:title="Live Match" />
+
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_event_note_black_24dp"
+            android:title="Calendar" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_stats"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Statistics" />
+        <item
+            android:id="@+id/nav_competitions"
+            android:icon="@drawable/trophy"
+            android:title="Competitions" />
+        <item
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/voice"
+            android:title="Live Match Blog" />
+        <item
+            android:id="@+id/nav_tweets"
+            android:icon="@drawable/twitter"
+            android:title="United Tweets" />
+        <item
+            android:id="@+id/nav_match_highlights"
+            android:icon="@drawable/play_circle"
+            android:title="Match Highlights" />
+        <item
+            android:id="@+id/nav_classic_moments"
+            android:icon="@drawable/play_box_outline"
+            android:title="Classic Moments" />
+        <item
+            android:id="@+id/nav_united_quotes"
+            android:icon="@drawable/file_delimited"
+            android:title="United related quotes" />
+
     </group>
 
     <item android:title="Communicate">
