@@ -11,11 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="5dip"
-        android:elevation="3dp"
+
+        android:elevation="1dp"
         card_view:cardCornerRadius="0dip">
 
         <LinearLayout
+            android:background="@drawable/bottom_border_brown"
             android:orientation="horizontal"
             android:padding="1dip"
             android:layout_width="match_parent"
