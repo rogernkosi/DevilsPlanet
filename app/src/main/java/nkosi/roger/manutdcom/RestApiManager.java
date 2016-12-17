@@ -6,7 +6,7 @@ import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
 /**
- * Created by lulu on 10/24/2016.
+ * Created by roger on 10/24/2016.
  */
 public class RestApiManager {
     private API homeApi;

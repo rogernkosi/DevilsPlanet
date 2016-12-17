@@ -76,7 +76,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
                 public void onSuccess(LoginResult loginResult) {
                     LoginActivity.accessToken = loginResult.getAccessToken().toString();
                     startActivity(new Intent(getApplicationContext(), Home.class));
-                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                    finish();
                 }
 
                 @Override
@@ -91,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
             });
         }else if(checkFBLogin() != null){
             startActivity(new Intent(this, Home.class));
+            Toast.makeText(LoginActivity.this, "Already logged in Via Facebook", Toast.LENGTH_SHORT).show();
         }
 
         if (checkGoogleLogin() == null){
@@ -108,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
                     .build();
         }else if (checkFBLogin() != null){
             startActivity(new Intent(this, Home.class));
+
         }
 
 
@@ -200,6 +203,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
             editor.commit();
 
             startActivity(new Intent(LoginActivity.this, Home.class));
+            finish();
 
         } else {
             // Signed out, show unauthenticated UI.

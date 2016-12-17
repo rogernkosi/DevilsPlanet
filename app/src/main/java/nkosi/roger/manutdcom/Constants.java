@@ -7,7 +7,6 @@ package nkosi.roger.manutdcom;
  */
 
 public class Constants {
-    public final static String URL = "http://devwiggle.co.za/cefups/";
     public final static String BASE_URL = "http://api.nkosiroger.co.za/reds/";
     public static final String DETAILS = "details";
     public static final String NEWSID = "newsID";
