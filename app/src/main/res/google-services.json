@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "12971726634",
+    "project_id": "man-utd-com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12971726634:android:c2d29545655760cc",
+        "android_client_info": {
+          "package_name": "nkosi.roger.manutdcom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12971726634-kjqdtd1ft4krrev5ph1fsfvhbsgm1229.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLj_urp8aIQQQ6d-Gxb6p-78HW8MmUhtU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

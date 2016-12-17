@@ -36,6 +36,8 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <string name="facebook_app_id">1822531264688931</string>
 
     <string name="fb_login_protocol_scheme">fb1822531264688931</string>
+    <string name="server_client_id">782159066220-ee9coq2p7jhd4sqrh5449q5672v59150.apps.googleusercontent.com</string>
+
 
 
 </resources>

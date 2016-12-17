@@ -120,6 +120,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                  />
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:height="60dp"
+                
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
     </LinearLayout>
