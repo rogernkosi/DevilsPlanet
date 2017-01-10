@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">TEST</string>
+    <string name="app_name">Devils Planet</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email (required)</string>
     <string name="prompt_password">Password (required)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -37,7 +37,9 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
     <string name="fb_login_protocol_scheme">fb1822531264688931</string>
     <string name="server_client_id">782159066220-ee9coq2p7jhd4sqrh5449q5672v59150.apps.googleusercontent.com</string>
-
+    <string name="manvs">MANCHESTER UNITED vs SUNDERLAND</string>
+    <string name="goal_example">Great goal by Zlatan Ibrahimovic, as the Swede rises above two defenders to make a thumping head. 2-1</string>
+    <string name="share_title">Share event...</string>
 
 
 </resources>

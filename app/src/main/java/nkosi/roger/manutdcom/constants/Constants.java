@@ -1,4 +1,4 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.constants;
 
 
 

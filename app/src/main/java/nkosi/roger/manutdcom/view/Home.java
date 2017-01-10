@@ -1,12 +1,14 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,12 +25,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import nkosi.roger.manutdcom.R;
+import nkosi.roger.manutdcom.controller.APIController;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +46,12 @@ public class Home extends AppCompatActivity
 
     private FragmentManager manager;
     private FragmentPagerAdapter adapter;
+    private TextView teamsAndScore, matchDate, featuredText;
+    private ImageView featuredImg;
+    private Context context = Home.this;
+    private APIController controller;
+    private NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +60,41 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        controller = new APIController();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+
+        teamsAndScore = (TextView)header.findViewById(R.id.teamsplayig);
+        matchDate = (TextView)header.findViewById(R.id.feature_date);
+        featuredImg = (ImageView)header.findViewById(R.id.feature_image);
+        featuredText = (TextView)header.findViewById(R.id.feature_text);
+
+        controller.fetchFeaturedMatch(teamsAndScore, matchDate, featuredImg, featuredText, context);
+
+
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         Drawable drawable = ResourcesCompat.getDrawable(getResources(),   R.drawable.view_grid, getTheme());
+        toggle.setDrawerIndicatorEnabled(false);
 
+        toggle.setHomeAsUpIndicator(drawable);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (drawer.isDrawerVisible(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            }
+        });
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         FragmentManager manager1 = getSupportFragmentManager();
         FragmentTransaction transaction = manager1.beginTransaction();
@@ -261,13 +297,21 @@ public class Home extends AppCompatActivity
             FragmentTransaction transaction0 = manager0.beginTransaction();
             transaction0.replace(R.id.content_home, new HomeFragment());
             transaction0.commit();
-        } else if (id == R.id.nav_calendar) {
-
+        } else if (id == R.id.nav_live_matches) {
+            FragmentManager manager0 = getSupportFragmentManager();
+            FragmentTransaction transaction0 = manager0.beginTransaction();
+            transaction0.replace(R.id.content_home, new LiveMatch());
+            transaction0.commit();
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
+        }else if (id == R.id.nav_blog){
+            FragmentManager manager0 = getSupportFragmentManager();
+            FragmentTransaction transaction0 = manager0.beginTransaction();
+            transaction0.replace(R.id.content_home, new MatchBlog());
+            transaction0.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

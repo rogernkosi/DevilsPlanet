@@ -1,11 +1,11 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.model;
 
 /**
  * Created by Roger on 12/6/2016.
  */
 
 public class HeadlinesModel {
-    String headline, img, details, hId, source;
+    public String headline, img, details, hId, source;
 
     public HeadlinesModel(HeadlineBuilder builder) {
         this.details = builder.details;

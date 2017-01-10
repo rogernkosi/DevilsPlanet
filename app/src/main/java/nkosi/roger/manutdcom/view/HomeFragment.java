@@ -1,13 +1,13 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.view;
 
 
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import nkosi.roger.manutdcom.R;
+import nkosi.roger.manutdcom.controller.APIController;
+import nkosi.roger.manutdcom.model.HeadlinesModel;
 
 
 /**
@@ -32,12 +34,13 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
     private RecyclerView recyclerView;
     private List<HeadlinesModel> list = new ArrayList<>();
     private HeadlineAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         apiController = new APIController(this);
-        apiController.fetchHeadlines();
+        apiController.fetchHeadlines(getContext());
     }
 
     @Override
@@ -46,10 +49,23 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.headlines);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorPrimaryDark));
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                adapter.refresh();
+                apiController.refetchHeadlines(getContext());
+            }
+        });
 
         adapter = new HeadlineAdapter(list);
         recyclerView.setAdapter(adapter);
@@ -74,7 +90,7 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
 
     @Override
     public void onFetchComplete() {
-
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -93,6 +109,11 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
 
         public void populate(HeadlinesModel model){
             postModels.add(model);
+            notifyDataSetChanged();
+        }
+
+        public void refresh() {
+            postModels.clear();
             notifyDataSetChanged();
         }
 
@@ -149,7 +170,7 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
             holder.details.setText(model.details.substring(0, 130)+"...");
             holder.headline.setText(model.headline);
 
-            Picasso.with(holder.itemView.getContext()).load(Constants.BASE_URL + "images/" + model.img).into(holder.imageView);
+//            Picasso.with(holder.itemView.getContext()).load(Constants.BASE_URL + "images/" + model.img).into(holder.imageView);
 
             holder.parentView.setSelected(list.contains(position));
 
@@ -184,7 +205,7 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
             public Holder(View itemView) {
                 super(itemView);
                 this.parentView = itemView;
-                imageView = (ImageView)itemView.findViewById(R.id.headline_thumbnail);
+//                imageView = (ImageView)itemView.findViewById(R.id.headline_thumbnail);
                 headline = (TextView)itemView.findViewById(R.id.headline);
                 details = (TextView)itemView.findViewById(R.id.details);
                 source = (TextView)itemView.findViewById(R.id.source);
@@ -204,7 +225,5 @@ public class HomeFragment extends Fragment implements APIController.HeadlinesCal
             }
 
         }
-
-
     }
 }

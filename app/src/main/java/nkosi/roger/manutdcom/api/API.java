@@ -1,4 +1,4 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.api;
 
 import java.util.Map;
 
@@ -8,7 +8,7 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
 
 /**
- * Created by lulu on 10/24/2016.
+ * Created by ROGER on 10/24/2016.
  */
 
 public interface API {
@@ -19,17 +19,17 @@ public interface API {
 
     @FormUrlEncoded
     @POST("/index.php")
-    void getTasks(@FieldMap Map<String, String> map, Callback<String> callback);
+    void getLiveEvents(@FieldMap Map<String, String> map, Callback<String> callback);
 
     @FormUrlEncoded
     @POST("/index.php")
-    void getProfiles(@FieldMap Map<String, String> map, Callback<String> callback);
+    void getLiveMatch(@FieldMap Map<String, String> map, Callback<String> callback);
 
     @FormUrlEncoded
     @POST("/index.php")
-    void getAssignments(@FieldMap Map<String, String> map, Callback<String> callback);
+    void getFeaturedMatch(@FieldMap Map<String, String> map, Callback<String> callback);
 
     @FormUrlEncoded
     @POST("/index.php")
-    void getSubjects(@FieldMap Map<String, String> map, Callback<String> callback);
+    void getMathBlog(@FieldMap Map<String, String> map, Callback<String> callback);
 }

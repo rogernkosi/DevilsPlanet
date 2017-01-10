@@ -11,39 +11,30 @@
             android:id="@+id/nav_live_matches"
             android:icon="@drawable/soccer"
             android:title="Live Match" />
+        <item
+            android:id="@+id/nav_blog"
+            android:icon="@drawable/voice"
+            android:title="Match Blog" />
 
         <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_event_note_black_24dp"
             android:title="Calendar" />
-        <item
-            android:id="@+id/nav_stats"
-            android:icon="@drawable/ic_storage_black_24dp"
-            android:title="Statistics" />
+
         <item
             android:id="@+id/nav_competitions"
             android:icon="@drawable/trophy"
             android:title="Competitions" />
+
         <item
-            android:id="@+id/nav_blog"
-            android:icon="@drawable/voice"
-            android:title="Live Match Blog" />
+            android:id="@+id/nav_stats"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Statistics" />
+
         <item
             android:id="@+id/nav_tweets"
             android:icon="@drawable/twitter"
             android:title="United Tweets" />
-        <item
-            android:id="@+id/nav_match_highlights"
-            android:icon="@drawable/play_circle"
-            android:title="Match Highlights" />
-        <item
-            android:id="@+id/nav_classic_moments"
-            android:icon="@drawable/play_box_outline"
-            android:title="Classic Moments" />
-        <item
-            android:id="@+id/nav_united_quotes"
-            android:icon="@drawable/file_delimited"
-            android:title="United related quotes" />
 
     </group>
 

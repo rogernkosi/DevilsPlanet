@@ -1,7 +1,10 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.manager;
 
 import com.google.gson.GsonBuilder;
 
+import nkosi.roger.manutdcom.StringDesirializer;
+import nkosi.roger.manutdcom.api.API;
+import nkosi.roger.manutdcom.constants.Constants;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 

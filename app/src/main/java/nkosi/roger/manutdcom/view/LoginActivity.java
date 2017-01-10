@@ -1,9 +1,10 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -23,8 +24,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.internal.CallbackManagerImpl;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,6 +34,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import nkosi.roger.manutdcom.JSONParser;
+import nkosi.roger.manutdcom.R;
 
 /**
  * A login screen that offers login via email/password/facebook/twitter/google.
@@ -66,18 +76,47 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 
         setContentView(R.layout.activity_login);
 
-        if (checkFBLogin() == null){
-            Toast.makeText(LoginActivity.this, "Not logged in via facebook", Toast.LENGTH_LONG).show();
+//        if (checkFBLogin() == null){
+//            Toast.makeText(LoginActivity.this, "Not logged in via facebook", Toast.LENGTH_LONG).show();
             this.loginButton = (com.facebook.login.widget.LoginButton)findViewById(R.id.login_button);
             this.loginButton.setReadPermissions("email");
 
             this.loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
+
                     LoginActivity.accessToken = loginResult.getAccessToken().toString();
-                    startActivity(new Intent(getApplicationContext(), Home.class));
-                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
-                    finish();
+
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    // Insert your code here
+                                    try {
+                                        final String email = object.getString("email");
+                                        final String id = object.getString("id");
+                                        final String birthday = object.getString("birthday");
+                                        final String gender = object.getString("gender");
+//                                        final String about = object.getString("about");
+                                        final String name = object.getString("name");
+                                        final String picUri = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                        new BrewUser().execute(email, id, birthday, gender, picUri, null, name);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,name,birthday,email,gender,picture,about");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+
+//                    startActivity(new Intent(getApplicationContext(), Home.class));
+//                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+//                    finish();
                 }
 
                 @Override
@@ -90,10 +129,10 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
                     Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        }else if(checkFBLogin() != null){
-            startActivity(new Intent(this, Home.class));
-            Toast.makeText(LoginActivity.this, "Already logged in Via Facebook", Toast.LENGTH_SHORT).show();
-        }
+//        }else if(checkFBLogin() != null){
+//            startActivity(new Intent(this, Home.class));
+//            Toast.makeText(LoginActivity.this, "Already logged in Via Facebook", Toast.LENGTH_SHORT).show();
+//        }
 
         if (checkGoogleLogin() == null){
             // Configure sign-in to request the user's ID, email address, and basic
@@ -108,8 +147,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
 //                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
-        }else if (checkFBLogin() != null){
-            startActivity(new Intent(this, Home.class));
+        }else if (checkGoogleLogin() != null){
+//            startActivity(new Intent(this, Home.class));
+//            Toast.makeText(LoginActivity.this, "Google login success", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -202,6 +242,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
             editor.putString("googlePersonID", personId);
             editor.commit();
 
+            Toast.makeText(LoginActivity.this, "Success login iwth google account", Toast.LENGTH_SHORT).show();
+
             startActivity(new Intent(LoginActivity.this, Home.class));
             finish();
 
@@ -211,6 +253,48 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener{
         }
     }
 
+    private class BrewUser extends AsyncTask<String, String, JSONObject> {
+
+        private JSONParser jsonParser = new JSONParser();
+
+        @Override
+        protected JSONObject doInBackground(String... strings) {
+
+
+            try{
+                HashMap<String, String> map = new HashMap<>();
+                map.put("method", "brewUser");
+                map.put("picture", strings[4]);
+                map.put("about", strings[5]);
+                map.put("name", strings[6]);
+                map.put("gender", strings[3]);
+                map.put("id", strings[1]);
+                map.put("birthday", strings[2]);
+                map.put("email", strings[0]);
+
+                JSONObject jsonObject = jsonParser.makeHttpRequest("http://api.nkosiroger.co.za/reds", "POST", map);
+
+                if (jsonObject != null){
+                    Log.e("JSON result", jsonObject.toString());
+                    return jsonObject;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+    }
 
 }
 

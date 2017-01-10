@@ -1,4 +1,4 @@
-package nkosi.roger.manutdcom;
+package nkosi.roger.manutdcom.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+
+import nkosi.roger.manutdcom.R;
 
 public class NewsDetailActivity extends AppCompatActivity {
 
