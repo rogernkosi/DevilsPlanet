@@ -37,9 +37,35 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
     <string name="fb_login_protocol_scheme">fb1822531264688931</string>
     <string name="server_client_id">782159066220-ee9coq2p7jhd4sqrh5449q5672v59150.apps.googleusercontent.com</string>
-    <string name="manvs">MANCHESTER UNITED vs SUNDERLAND</string>
-    <string name="goal_example">Great goal by Zlatan Ibrahimovic, as the Swede rises above two defenders to make a thumping head. 2-1</string>
-    <string name="share_title">Share event...</string>
+
+
+    <string name="share_title">Share with your pals...</string>
+    <string name="credits">Credits</string>
+    <string name="help">Help</string>
+    <string name="contact_us">For queries, complaints or any matter regarding
+        Devils Planet please fill in the fields bellow and we will
+        get back to you. Have a lovely day :)
+    </string>
+    <string name="name">Name (required)</string>
+    <string name="comment">Comment (require)</string>
+    <string name="ok">OK</string>
+    <string name="developer_android">Developer (Android) : Roger Nkosi</string>
+    <string name="content_provider">Content Provider : Roger Nkosi</string>
+    <string name="developer_web">Developer (Web Services) : Roger Nkosi</string>
+    <string name="database">Database Admin : Roger Nkosi</string>
+    <string name="special_thanks">A special thanks to:
+        \nGeoff Seloana for allowing us to use his (Google developer) account for the time being.
+        \nAll the guys on social media for all their support and mostly for allowing us to use their social media content (images and text) on Devils Planet.
+    </string>
+    <string name="title_activity_help">Help</string>
+    <string name="home_help">Q: I open my Devils Planet app and I do not see any data what should I do?</string>
+    <string name="answer_home">A: RUN, or you can just swipe down with your thumb to refresh the data, make sure your device have an active internet connection.</string>
+    <string name="f_match">Q: I do not see any match info on the \"Featured Match\" area what should I do?</string>
+    <string name="f_answer">A: Again, make sure you have an active internet connection, then tap on the red empty space to make a new request to the server and make a few seconds.</string>
+    <string name="live_score">Q: I do not see the live match score, what should I do?</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="welcome">Welcome!</string>
+    <string name="send">SEND</string>
 
 
 </resources>

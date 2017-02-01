@@ -32,4 +32,16 @@ public interface API {
     @FormUrlEncoded
     @POST("/index.php")
     void getMathBlog(@FieldMap Map<String, String> map, Callback<String> callback);
+
+    @FormUrlEncoded
+    @POST("/index.php")
+    void getCalendar(@FieldMap Map<String, String> map, Callback<String> callback);
+
+    @FormUrlEncoded
+    @POST("/index.php")
+    void sendComment(@FieldMap Map<String, String> map, Callback<String> callback);
+
+    @FormUrlEncoded
+    @POST("/index.php")
+    void getHistory(@FieldMap Map<String, String> map, Callback<String> callback);
 }

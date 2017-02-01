@@ -9,10 +9,10 @@ public class FeaturedMatchModel {
     @SerializedName("featureMatchID")
     @Expose
     private String featureMatchID;
-    @SerializedName("homeTeam")
+    @SerializedName("against")
     @Expose
     private String homeTeam;
-    @SerializedName("awayTeam")
+    @SerializedName("homeAway")
     @Expose
     private String awayTeam;
     @SerializedName("score")

@@ -1,48 +1,55 @@
 package nkosi.roger.manutdcom.view;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Base64;
-import android.util.Log;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import nkosi.roger.manutdcom.R;
 import nkosi.roger.manutdcom.controller.APIController;
+import nkosi.roger.manutdcom.utils.aUtils;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private  AHBottomNavigation bottomNavigation;
-//    private AHBottomNavigationItem home, profile, settings;
+    private AHBottomNavigation bottomNavigation;
+    //    private AHBottomNavigationItem home, profile, settings;
 
     private FragmentManager manager;
     private FragmentPagerAdapter adapter;
@@ -51,6 +58,7 @@ public class Home extends AppCompatActivity
     private Context context = Home.this;
     private APIController controller;
     private NavigationView navigationView;
+    private LinearLayout featureLay;
 
 
     @Override
@@ -67,10 +75,18 @@ public class Home extends AppCompatActivity
 
         View header = navigationView.getHeaderView(0);
 
-        teamsAndScore = (TextView)header.findViewById(R.id.teamsplayig);
-        matchDate = (TextView)header.findViewById(R.id.feature_date);
-        featuredImg = (ImageView)header.findViewById(R.id.feature_image);
-        featuredText = (TextView)header.findViewById(R.id.feature_text);
+        teamsAndScore = (TextView) header.findViewById(R.id.teamsplayig);
+        matchDate = (TextView) header.findViewById(R.id.feature_date);
+        featuredImg = (ImageView) header.findViewById(R.id.feature_image);
+        featuredText = (TextView) header.findViewById(R.id.feature_text);
+        featureLay = (LinearLayout) header.findViewById(R.id.feature_lay);
+
+        featureLay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.fetchFeaturedMatch(teamsAndScore, matchDate, featuredImg, featuredText, context);
+            }
+        });
 
         controller.fetchFeaturedMatch(teamsAndScore, matchDate, featuredImg, featuredText, context);
 
@@ -79,7 +95,7 @@ public class Home extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(),   R.drawable.view_grid, getTheme());
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.view_grid, getTheme());
         toggle.setDrawerIndicatorEnabled(false);
 
         toggle.setHomeAsUpIndicator(drawable);
@@ -102,6 +118,8 @@ public class Home extends AppCompatActivity
         transaction.commit();
 
 //        setBottomNavigation();
+
+
     }
 
     public static String printKeyHash(Activity context) {
@@ -127,8 +145,7 @@ public class Home extends AppCompatActivity
             }
         } catch (PackageManager.NameNotFoundException e1) {
             Log.e("Name not found", e1.toString());
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             Log.e("No such an algorithm", e.toString());
         } catch (Exception e) {
             Log.e("Exception", e.toString());
@@ -137,7 +154,7 @@ public class Home extends AppCompatActivity
         return key;
     }
 
-    public void setBottomNavigation(){
+    public void setBottomNavigation() {
 //        bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         final AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_account_box_black_24dp, R.color.colorPrimary);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_home_black_24dp, R.color.colorPrimary);
@@ -173,14 +190,14 @@ public class Home extends AppCompatActivity
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
-                switch (position){
+                switch (position) {
                     case 1:
                         FragmentManager manager1 = getSupportFragmentManager();
                         FragmentTransaction transaction = manager1.beginTransaction();
                         transaction.replace(R.id.content_home, new HomeFragment());
                         transaction.commit();
                         bottomNavigation.setCurrentItem(position, wasSelected);
-                        Log.e("pos", position+"");
+                        Log.e("pos", position + "");
                         break;
                     case 0:
                         FragmentManager manager0 = getSupportFragmentManager();
@@ -188,7 +205,7 @@ public class Home extends AppCompatActivity
                         transaction0.replace(R.id.content_home, new ProfileFragment());
                         transaction0.commit();
                         bottomNavigation.setCurrentItem(position, wasSelected);
-                        Log.e("pos", position+"");
+                        Log.e("pos", position + "");
                         break;
                     case 2:
                         FragmentManager manager2 = getSupportFragmentManager();
@@ -196,7 +213,7 @@ public class Home extends AppCompatActivity
                         transaction2.replace(R.id.content_home, new FindEvents());
                         transaction2.commit();
                         bottomNavigation.setCurrentItem(position, wasSelected);
-                        Log.e("pos", position+"");
+                        Log.e("pos", position + "");
                         break;
                     default:
                         return false;
@@ -231,11 +248,12 @@ public class Home extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
-            case R.id.action_settings:
-                return true;
-            case R.id.logout:
-                startActivity(new Intent(this, LoginActivity.class));
+        switch (id) {
+            case R.id.help:
+                startActivity(new Intent(context, Help.class));
+                break;
+            case R.id.credits:
+                startActivity(new Intent(context, Credits.class));
                 break;
             default:
                 return false;
@@ -286,6 +304,22 @@ public class Home extends AppCompatActivity
         }
     }
 
+    /**
+     * Dispatch onResume() to fragments.  Note that for better inter-operation
+     * with older versions of the platform, at the point of this call the
+     * fragments attached to the activity are <em>not</em> resumed.  This means
+     * that in some cases the previous state may still be saved, not allowing
+     * fragment transactions that modify the state.  To correctly interact
+     * with fragments in their proper state, you should instead override
+     * {@link #onResumeFragments()}.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        controller.fetchFeaturedMatch(teamsAndScore, matchDate, featuredImg, featuredText, context);
+
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -304,13 +338,24 @@ public class Home extends AppCompatActivity
             transaction0.commit();
 
         } else if (id == R.id.nav_share) {
-
+            String tittle = "Devils Planet";
+            String body = "Please download this cool Man Utd fans application" +
+                    "on Google Play Store(Devils Planet)";
+            aUtils.invokeShare(context, tittle, body);
         } else if (id == R.id.nav_send) {
-
-        }else if (id == R.id.nav_blog){
+            FragmentManager manager0 = getSupportFragmentManager();
+            FragmentTransaction transaction0 = manager0.beginTransaction();
+            transaction0.replace(R.id.content_home, new Contact());
+            transaction0.commit();
+        } else if (id == R.id.nav_blog) {
             FragmentManager manager0 = getSupportFragmentManager();
             FragmentTransaction transaction0 = manager0.beginTransaction();
             transaction0.replace(R.id.content_home, new MatchBlog());
+            transaction0.commit();
+        } else if (id == R.id.nav_calendar) {
+            FragmentManager manager0 = getSupportFragmentManager();
+            FragmentTransaction transaction0 = manager0.beginTransaction();
+            transaction0.replace(R.id.content_home, new Calendar());
             transaction0.commit();
         }
 
@@ -318,4 +363,11 @@ public class Home extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
 }

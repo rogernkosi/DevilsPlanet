@@ -1,6 +1,5 @@
 package nkosi.roger.manutdcom.adapter;
 
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,31 +10,26 @@ import android.widget.TextView;
 import java.util.List;
 
 import nkosi.roger.manutdcom.R;
-import nkosi.roger.manutdcom.model.BlogModel;
-import nkosi.roger.manutdcom.utils.aUtils;
+import nkosi.roger.manutdcom.model.CalendarModel;
 
 /**
- * Created by MPHILE on 1/9/2017.
+ * Created by MPHILE on 1/11/2017.
  */
-public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.Holder> {
+public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Holder> {
 
-    private List<BlogModel> blogModel;
+    List<CalendarModel> calendarModel;
 
-    public BlogAdapter(List<BlogModel> blogModel) {
-        this.blogModel = blogModel;
+    public CalendarAdapter(List<CalendarModel> calendarModel) {
+        this.calendarModel = calendarModel;
     }
 
-    public BlogAdapter(){
-
-    }
-
-    public void populate(BlogModel model) {
-        blogModel.add(model);
+    public void populate(CalendarModel model) {
+        calendarModel.add(model);
         notifyDataSetChanged();
     }
 
     public void refresh() {
-        blogModel.clear();
+        calendarModel.clear();
         notifyDataSetChanged();
     }
 
@@ -54,14 +48,14 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.Holder> {
      *
      * @param parent   The ViewGroup into which the new View will be added after it is bound to
      *                 an adapter position.
-     * @param viewType The view type of the new View.
-     * @return A new ViewHolder that holds a View of the given view type.
+     * @param viewType The parentView type of the new View.
+     * @return A new ViewHolder that holds a View of the given parentView type.
      * @see #getItemViewType(int)
      * @see #onBindViewHolder(ViewHolder, int)
      */
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_row, parent, false);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_calendar, parent, false);
         return new Holder(row);
     }
 
@@ -86,19 +80,15 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.Holder> {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(final Holder holder, int position) {
-        final BlogModel model = blogModel.get(position);
-        holder.datecreated.setText(model.time);
-        holder.description.setText(model.content);
-        holder.title.setText(model.title);
+    public void onBindViewHolder(Holder holder, int position) {
+        final CalendarModel model = calendarModel.get(position);
+        holder.dateplayed.setText(model.datePlayed);
+        holder.against.setText(model.against);
+        holder.score.setText(model.score);
+        holder.comp.setText(model.competition);
+        holder.homeAway.setText(model.homeAway);
 
-        holder.parentView.setSelected(blogModel.contains(position));
-        holder.parentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                aUtils.invokeShare(holder.parentView.getContext(), model.title, model.content);
-            }
-        });
+        holder.parentView.setSelected(calendarModel.contains(position));
     }
 
     /**
@@ -108,34 +98,22 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.Holder> {
      */
     @Override
     public int getItemCount() {
-        try{
-            return blogModel.size();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return 0;
+        return calendarModel.size();
     }
 
-    public class Holder extends RecyclerView.ViewHolder{
+    public class Holder extends RecyclerView.ViewHolder {
 
-        public TextView title, description, datecreated;
-        public View parentView;
-        Typeface typeface;
+        private TextView against, homeAway, score, dateplayed,comp;
+        private View parentView;
 
         public Holder(View itemView) {
             super(itemView);
             this.parentView = itemView;
-            this.datecreated = (TextView) this.parentView.findViewById(R.id.blog_date);
-            this.description = (TextView) this.parentView.findViewById(R.id.blog_content);
-            this.title = (TextView) this.parentView.findViewById(R.id.blog_title);
-
-            typeface = Typeface.createFromAsset(this.parentView.getContext().getAssets(), "fonts/arcon_regular.otf");
-//            this.title.setTypeface(this.typeface, Typeface.BOLD);
-//            this.title.setTextSize(12);
-
-//            this.description.setTypeface(this.typeface);
-//            this.datecreated.setTypeface(this.typeface);
-//            this.datecreated.setTextSize(10);
+            this.homeAway = (TextView)this.parentView.findViewById(R.id.home_away);
+            this.comp = (TextView)this.parentView.findViewById(R.id.competition);
+            this.score = (TextView)this.parentView.findViewById(R.id.score);
+            this.against = (TextView)this.parentView.findViewById(R.id.against);
+            this.dateplayed = (TextView)this.parentView.findViewById(R.id.calendar_date);
         }
     }
 }

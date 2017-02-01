@@ -18,11 +18,12 @@ import java.util.List;
 import nkosi.roger.manutdcom.constants.Constants;
 import nkosi.roger.manutdcom.manager.RestApiManager;
 import nkosi.roger.manutdcom.model.BlogModel;
+import nkosi.roger.manutdcom.model.CalendarModel;
 import nkosi.roger.manutdcom.model.FeaturedMatchModel;
 import nkosi.roger.manutdcom.model.HeadlinesModel;
+import nkosi.roger.manutdcom.model.History;
 import nkosi.roger.manutdcom.model.LiveEventsModel;
 import nkosi.roger.manutdcom.model.LiveMatchModel;
-import nkosi.roger.manutdcom.utils.aUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -33,35 +34,42 @@ import retrofit.client.Response;
 
 public class APIController {
 
-    private nkosi.roger.manutdcom.utils.aUtils aUtils;
     private final String TAG = APIController.class.getSimpleName();
     private RestApiManager restApiManager;
     private HeadlinesCallBackListener headlinesCallBackListener;
     private LiveEventCallBackListener liveEventCallBackListener;
     private ProgressDialog dialog;
     private BlogCallBackListener blogCallBackListener;
+    private CalendarCallBackListener calendarCallBackListener;
 
     public APIController(HeadlinesCallBackListener headlinesCallBackListener) {
         this.headlinesCallBackListener = headlinesCallBackListener;
         this.restApiManager = new RestApiManager();
-        this.aUtils = new aUtils();
+
     }
 
     public APIController(LiveEventCallBackListener liveEventCallBackListener) {
         this.restApiManager = new RestApiManager();
         this.liveEventCallBackListener = liveEventCallBackListener;
-        this.aUtils = new aUtils();
+
     }
 
     public APIController(BlogCallBackListener blogCallBackListener) {
         this.restApiManager = new RestApiManager();
         this.blogCallBackListener = blogCallBackListener;
-        this.aUtils = new aUtils();
+
     }
 
     public APIController() {
         this.restApiManager = new RestApiManager();
     }
+
+    public APIController(CalendarCallBackListener listener) {
+        this.restApiManager = new RestApiManager();
+        this.calendarCallBackListener = listener;
+
+    }
+
 
     public interface HeadlinesCallBackListener {
         void onFetchStart();
@@ -69,6 +77,18 @@ public class APIController {
         void onFetchProgress(HeadlinesModel model);
 
         void onFetchProgress(List<HeadlinesModel> modelList);
+
+        void onFetchComplete();
+
+        void onFetchFailed();
+    }
+
+    public interface CalendarCallBackListener {
+        void onFetchStart();
+
+        void onFetchProgress(CalendarModel model);
+
+        void onFetchProgress(List<CalendarModel> modelList);
 
         void onFetchComplete();
 
@@ -112,10 +132,11 @@ public class APIController {
         restApiManager.getHomeAPi().getMathBlog(map, new Callback<String>() {
             @Override
             public void success(String s, Response response) {
-                Log.e(TAG, s);
+
                 JSONArray array = null;
 
                 try {
+                    Log.e(TAG, s);
                     array = new JSONArray(s);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
@@ -159,10 +180,11 @@ public class APIController {
         restApiManager.getHomeAPi().getMathBlog(map, new Callback<String>() {
             @Override
             public void success(String s, Response response) {
-                Log.e(TAG, s);
+
                 JSONArray array = null;
 
                 try {
+                    Log.e(TAG, s);
                     array = new JSONArray(s);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
@@ -210,9 +232,10 @@ public class APIController {
 
             @Override
             public void success(String s, Response response) {
-                Log.e(TAG, s);
+
                 JSONArray array = null;
                 try {
+                    Log.e(TAG, s);
                     array = new JSONArray(s);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
@@ -226,7 +249,7 @@ public class APIController {
                                 .buildHeadLines();
                         headlinesCallBackListener.onFetchProgress(model);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 headlinesCallBackListener.onFetchComplete();
@@ -262,9 +285,10 @@ public class APIController {
 
             @Override
             public void success(String s, Response response) {
-                Log.e(TAG, s);
+
                 JSONArray array = null;
                 try {
+                    Log.e(TAG, s);
                     array = new JSONArray(s);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
@@ -278,7 +302,7 @@ public class APIController {
                                 .buildHeadLines();
                         headlinesCallBackListener.onFetchProgress(model);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 headlinesCallBackListener.onFetchComplete();
@@ -316,7 +340,7 @@ public class APIController {
 
             @Override
             public void success(String s, Response response) {
-                Log.e(TAG, s);
+
                 JSONArray array = null;
                 try {
                     array = new JSONArray(s);
@@ -332,7 +356,7 @@ public class APIController {
                         liveEventCallBackListener.onFetchProgress(model);
 
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 liveEventCallBackListener.onFetchComplete();
@@ -355,6 +379,105 @@ public class APIController {
         });
     }
 
+    public void fetchCalendar(final Context context) {
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.setIndeterminate(true);
+        dialog.show();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("method", "calendar");
+
+        restApiManager.getHomeAPi().getCalendar(map, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                JSONArray array = null;
+
+                try {
+                    Log.e(TAG, s);
+                    array = new JSONArray(s);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject object = array.getJSONObject(i);
+                        CalendarModel model = new CalendarModel.BuildCalender()
+                                .setHomeAway(object.getString("homeAway"))
+                                .setComp(object.getString("competition"))
+                                .setDatePlayed(object.getString("datePlayed"))
+                                .setAgainst(object.getString("against"))
+                                .setScore(object.getString("score"))
+                                .buildCalender();
+                        calendarCallBackListener.onFetchProgress(model);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                calendarCallBackListener.onFetchComplete();
+
+                if (dialog.isShowing())
+                    dialog.dismiss();
+                if (array == null) {
+                    nkosi.roger.manutdcom.utils.aUtils.showDialog(context);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (dialog.isShowing())
+                    dialog.dismiss();
+                nkosi.roger.manutdcom.utils.aUtils.showDialog(context);
+                Log.e(TAG, "Error :: " + error.getMessage());
+                calendarCallBackListener.onFetchComplete();
+            }
+        });
+    }
+
+    public void refetchCalendar(final Context context) {
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("method", "calendar");
+
+        restApiManager.getHomeAPi().getCalendar(map, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                JSONArray array = null;
+
+                try {
+                    Log.e(TAG, s);
+                    array = new JSONArray(s);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject object = array.getJSONObject(i);
+                        CalendarModel model = new CalendarModel.BuildCalender()
+                                .setHomeAway(object.getString("homeAway"))
+                                .setComp(object.getString("competition"))
+                                .setDatePlayed(object.getString("datePlayed"))
+                                .setAgainst(object.getString("against"))
+                                .setScore(object.getString("score"))
+                                .buildCalender();
+                        calendarCallBackListener.onFetchProgress(model);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                calendarCallBackListener.onFetchComplete();
+
+                if (array == null) {
+                    nkosi.roger.manutdcom.utils.aUtils.showDialog(context);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                nkosi.roger.manutdcom.utils.aUtils.showDialog(context);
+                Log.e(TAG, "Error :: " + error.getMessage());
+                calendarCallBackListener.onFetchComplete();
+            }
+        });
+    }
+
     public void refetchEvents(final Context context) {
 
 
@@ -365,9 +488,10 @@ public class APIController {
 
             @Override
             public void success(String s, Response response) {
-                Log.e(TAG, s);
+
                 JSONArray array = null;
                 try {
+                    Log.e(TAG, s);
                     array = new JSONArray(s);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
@@ -381,7 +505,7 @@ public class APIController {
                         liveEventCallBackListener.onFetchProgress(model);
 
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 liveEventCallBackListener.onFetchComplete();
@@ -413,6 +537,7 @@ public class APIController {
             @Override
             public void success(String s, Response response) {
                 try {
+                    Log.e(TAG, s);
                     JSONObject object = new JSONObject(s);
                     final LiveMatchModel model = new LiveMatchModel();
                     model.setAwayteamname(object.getString("awayteamname"));
@@ -453,8 +578,9 @@ public class APIController {
         restApiManager.getHomeAPi().getFeaturedMatch(map, new Callback<String>() {
             @Override
             public void success(String s, Response response) {
-                Log.e(TAG, s);
+
                 try {
+                    Log.e(TAG, s);
                     JSONObject object = new JSONObject(s);
                     final FeaturedMatchModel model = new FeaturedMatchModel();
                     model.setMatchdate(object.getString("matchdate"));
@@ -468,6 +594,8 @@ public class APIController {
                     matchDate.setText(model.getMatchdate());
                     featuredText.setText(model.getFeatureText());
 
+                    Log.e("images", Constants.BASE_URL + "images/" + model.getFeatureImg());
+
                     Picasso.with(context).load(Constants.BASE_URL + "images/" + model.getFeatureImg()).into(featuredImg);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -476,7 +604,11 @@ public class APIController {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e(TAG, error.getMessage());
+                try {
+                    Log.e(TAG, error.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -509,13 +641,47 @@ public class APIController {
                     model.setMatchscore(object.getString("matchscore"));
 
                     // set textviews
-                    duration.setText(model.getDuration());
-                    hometeam.setText(model.getHometeamname());
-                    awayteam.setText(model.getAwayteamname());
-                    score.setText(model.getMatchscore());
-                    matchdate.setText(model.getMatchdate());
-                    competition.setText(model.getCompetition());
-                    matchlocation.setText(model.getLocation());
+                    if(model.getDuration() != null){
+                        duration.setText(model.getDuration());
+                    }else {
+                        duration.setText("N/A");
+                    }
+
+                    if(model.getMatchdate() != null){
+                        matchdate.setText(model.getMatchdate());
+                    }else {
+                        matchdate.setText("N/A");
+                    }
+
+                    if(model.getCompetition() != null){
+                        competition.setText(model.getCompetition());
+                    }else {
+                        competition.setText("N/A");
+                    }
+
+                    if(model.getMatchscore() != null){
+                        score.setText(model.getMatchscore());
+                    }else {
+                        score.setText("N/A");
+                    }
+
+                    if(model.getAwayteamname() != null){
+                        awayteam.setText(model.getAwayteamname());
+                    }else {
+                        awayteam.setText("N/A");
+                    }
+
+                    if(model.getHometeamname() != null){
+                        hometeam.setText(model.getHometeamname());
+                    }else {
+                        hometeam.setText("N/A");
+                    }
+
+                    if (model.getLocation() !=null){
+                        matchlocation.setText(model.getLocation());
+                    }else{
+                        matchlocation.setText("N/A");
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -535,5 +701,109 @@ public class APIController {
                 nkosi.roger.manutdcom.utils.aUtils.showDialog(context);
             }
         });
+    }
+
+    public void sendContact(final Context context, String name, String mail, String comment) {
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.setIndeterminate(true);
+        dialog.show();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("method", "contact");
+        map.put("name", name);
+        map.put("email", mail);
+        map.put("comment", comment);
+
+        restApiManager.getHomeAPi().sendComment(map, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                JSONObject object = null;
+                String message = null;
+                try {
+                    object = new JSONObject(s);
+                    message = object.getString("message");
+
+                } catch (Exception e) {
+
+                }
+
+                if (dialog.isShowing())
+                    dialog.dismiss();
+
+                if (object != null) {
+                    nkosi.roger.manutdcom.utils.aUtils.showAlertDialog(context,
+                            "Contact us", message);
+                } else {
+                    nkosi.roger.manutdcom.utils.aUtils.showAlertDialog(context,
+                            "Contact us", "Failed, please try again");
+                }
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (dialog.isShowing())
+                    dialog.dismiss();
+                nkosi.roger.manutdcom.utils.aUtils.showAlertDialog(context,
+                        "Contact us", "Failed, please try again");
+            }
+        });
+    }
+
+    public List<String> getHistory(final Context context, final TextView history) {
+
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.setIndeterminate(true);
+        dialog.show();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("method", "history");
+
+
+        restApiManager.getHomeAPi().getHistory(map, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+
+                JSONObject object = null;
+
+
+                try {
+                    Log.e(TAG, s);
+                    History history1 = new History();
+                    object = new JSONObject(s);
+                    history1.setContent(object.getString("content"));
+
+                    history.setText(history1.getContent());
+
+                } catch (Exception e) {
+
+                }
+
+
+                if (dialog.isShowing())
+                    dialog.dismiss();
+
+                if (object == null) {
+                    nkosi.roger.manutdcom.utils.aUtils.showAlertDialog(context,
+                            "Try Again", "Please check you internet connection");
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+                if (dialog.isShowing())
+                    dialog.dismiss();
+                nkosi.roger.manutdcom.utils.aUtils.showAlertDialog(context,
+                        "Try Again", "Please check you internet connection");
+            }
+        });
+
+
+        return null;
     }
 }
