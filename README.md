@@ -28,14 +28,14 @@ Devils planet is a social media based platform for Man United fans. It brings al
 ##Built With
 <ul>
 <li>Gradle - Dependency Management</li>
-<li>Intellij IDEAD - for code editing and debugging</li>
+<li>Intellij IDEA - for code editing and debugging</li>
 <li>Retrofit - REST Client for Android and Java by Square</li>
 </ul>
 
 ##Acknowledgments
 <ul>
 <li>Code Pilot</li>
-<li>Paolo Rotolo</lI>
+<li>Paolo Rotolo</li>
 </ul>
 
 ##Screenshots
@@ -49,7 +49,7 @@ I have three fragments which will display Manchester United history selected ran
 <p>Red updates from Man United fans, pundits, news headlines, transfer rumours, press conference updates and more.</p>
 ![alt tag](http://nkosiroger.co.za//images/device-2017-01-21-202708.png)
 
-<p>A menu to select easily access difference screens within the application.</p>
+<p>A menu to easily access difference screens within the application.</p>
 ![alt tag](http://nkosiroger.co.za//images/device-2017-01-21-083333.png)    
 
 
